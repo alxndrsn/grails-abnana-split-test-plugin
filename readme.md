@@ -4,7 +4,7 @@ Grails Abnana Split Plugin
 
 TODO                    | IN PROGRESS               | DONE
                                                       create test domain class
-                          create taglib for embedding test
+                                                      create taglib for embedding test
 create taglib for including javascript
 create javascript test functionality
 inject ab object/methods into controllers
