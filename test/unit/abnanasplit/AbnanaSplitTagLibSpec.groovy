@@ -6,8 +6,11 @@ import org.codehaus.groovy.grails.web.taglib.exceptions.GrailsTagException
 
 @TestFor(AbnanaSplitTagLib)
 class AbnanaSplitTagLibSpec extends Specification {
-	private static TODO(message='not yet implemented') { 
-		assert false == message
+	AbnanaSplitService service
+
+	def setup() {
+		service = Mock()
+		tagLib.abnanaSplitService = service
 	}
 
 	def 'test should fail if no page variable has been set'() {
@@ -46,10 +49,11 @@ class AbnanaSplitTagLibSpec extends Specification {
 		when:
 			def output = applyTemplate html
 		then:
-			output == ''
+			output == 'ok'
+			1 * service.checkOption('my-test', 'option-a') >> true
 		where:
-			html << ['<ab:test name="my-test"><ab:option name="option-a"/></ab:test>',
-				'<ab:option test="my-test" name="option-a"/>']
+			html << ['<ab:test name="my-test"><ab:option name="option-a">ok</ab:option></ab:test>',
+				'<ab:option test="my-test" name="option-a">ok</ab:option>']
 	}
 
 	def 'option should throw an exception if test is set in both page and att_test'() {
@@ -61,7 +65,7 @@ class AbnanaSplitTagLibSpec extends Specification {
 
 	def 'option should set page variable inside the tag'() {
 		expect:
-			applyTemplate('<ab:option name="option-a" test="my-test">${abnanaSplitTest?.option}</ab:test>') == 'option-a'
+			applyTemplate('<ab:option name="option-a" test="my-test">${abnanaSplitTest?.option}</ab:option>') == 'option-a'
 	}
 
 	def 'option should unset page variable at end of execution'() {
@@ -69,14 +73,88 @@ class AbnanaSplitTagLibSpec extends Specification {
 			applyTemplate('<ab:option name="option-a" test="my-test"/>${abnanaSplitTest?.option}') == 'option-a'
 	}
 
-	def 'option should check that the requested option is valid'() { expect: TODO() }
-	def 'option should only render if selected option is set option'() { expect: TODO() }
+	def 'option should check that the requested option is valid'() {
+		when:
+			applyTemplate '<ab:option test="my-test" name="option-a"/>'
+		then:
+			1 * service.checkOption('my-test', 'option-1')
+	}
 
-	def 'finished should check test name is set'() { expect: TODO() }
-	def 'finished should check that goal is supplied'() { expect: TODO() }
-	def 'finished should mark test complete if no ifOption specified'() { expect: TODO() }
-	def 'finished should throw expcetion if ifOption is set AND we are inside an option tag'() { expect: TODO() }
-	def 'finished should mark test complete if ifOption is fulfilled'() { expect: TODO() }
-	def 'finished should not mark test complete if ifOption is not fulfilled'() { expect: TODO() }
+	@Unroll
+	def 'option should not render if selected option is not set option'() {
+		setup:
+			service.checkOption('my-test', 'option-b') >> false
+		expect:
+			applyTemplate(html) == ''
+		where:
+			html << ['<ab:option test="my-test" name="option-b">bad</ab:option>',
+				'<ab:test name="my-test"><ab:option name="option-b">bad</ab:option></ab:test>']
+	}
+
+	def 'finished should check test name is set'() {
+		when:
+			applyTemplate '<ab:finished goal="all-done"/>'
+		then:
+			thrown GrailsTagException
+	}
+
+	def 'finished should check that goal is supplied'() {
+		when:
+			applyTemplate '<ab:finished test="my-test"/>'
+		then:
+			thrown GrailsTagException
+	}
+
+	@Unroll
+	def 'finished should mark test complete if no ifOption specified'() {
+		when:
+			applyTemplate html
+		then:
+			1 * service.markFinished('my-test', 'all-done')
+		where:
+			html << ['<ab:test name="my-test"><ab:finished goal="all-done"/></ab:test>',
+				'<ab:finished test="my-test" goal="all-done"/>']
+	}
+
+	@Unroll
+	def 'finished should throw expcetion if ifOption is set AND we are inside an option tag'() {
+		when:
+			applyTemplate html
+		then:
+			thrown GrailsTagException
+		where:
+			html << ['<ab:option test="my-test" name="option-a"><ab:finished goal="all-done" ifOption="option-a"/></ab:option>',
+				'<ab:test name="my-test"><ab:option name="option-a"><ab:finished goal="all-done" ifOption="option-a"/></ab:option></ab:test>']
+	}
+
+	@Unroll
+	def 'finished should mark test complete if ifOption is fulfilled'() {
+		given:
+			service.checkOption('my-test', 'option-a') >> true
+		when:
+			applyTemplate html
+		then:
+			1 * service.markFinished('my-test', 'all-done')
+		where:
+			html << ['<ab:test name="my-test"><ab:finished goal="all-done" ifOption="option-a"/></ab:test>',
+				'<ab:finished test="my-test" goal="all-done" ifOption="option-a"/>']
+	}
+
+	@Unroll
+	def 'finished should not mark test complete if ifOption is not fulfilled'() {
+		given:
+			service.checkOption('my-test', 'option-b') >> false
+		when:
+			applyTemplate html
+		then:
+			0 * service.markFinished('my-test', 'all-done')
+		where:
+			html << ['<ab:test name="my-test"><ab:finished goal="all-done" ifOption="option-b"/></ab:test>',
+				'<ab:finished test="my-test" goal="all-done" ifOption="option-b"/>']
+	}
+
+	private static TODO(message='not yet implemented') {
+		assert false == message
+	}
 }
 

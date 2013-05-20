@@ -3,6 +3,8 @@ package abnanasplit
 class AbnanaSplitTagLib {
 	static namespace = 'ab'
 
+	def abnanaSplitService
+
 	def test = { att, body ->
 		if(!att.name) throw new AbSplitTestNotSpecifiedException('<ab:test> missing attribute: "name"')
 		// TODO set page variable for the test name
