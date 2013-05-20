@@ -4,7 +4,7 @@ class AbnanaSplitTagLib {
 	static namespace = 'ab'
 
 	def test = { att, body ->
-		// TODO check that test name has been set
+		if(!att.name) throw new AbSplitTestNotSpecifiedException('<ab:test> missing attribute: "name"')
 		// TODO set page variable for the test name
 		out << body()
 		// TODO unset page variable for the test name
