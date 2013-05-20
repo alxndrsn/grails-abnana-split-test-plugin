@@ -13,14 +13,24 @@ class AbnanaSplitTagLibSpec extends Specification {
 		tagLib.abnanaSplitService = service
 	}
 
-	def 'test should fail if no page variable has been set'() {
+	@Unroll
+	def 'test should fail if no test name is been set'() {
 		when:
-			applyTemplate '<ab:test/>'
+			applyTemplate html
+		then:
+			thrown GrailsTagException
+		where:
+			html << ['<ab:test/>', '<ab:test name=""/>']
+	}
+
+	def 'should not be able to nest tests'() {
+		when:
+			applyTemplate '<ab:test name="one"><ab:test name="two"/></ab:test>'
 		then:
 			thrown GrailsTagException
 	}
 
-	def 'test should set page variable inside the test'() {
+	def 'test should set page variable inside the tag'() {
 		expect:
 			applyTemplate('<ab:test name="my-test">${abnanaSplitTest?.name}</ab:test>') == 'my-test'
 	}
@@ -64,20 +74,24 @@ class AbnanaSplitTagLibSpec extends Specification {
 	}
 
 	def 'option should set page variable inside the tag'() {
+		given:
+			service.checkOption('my-test', 'option-a') >> true
 		expect:
 			applyTemplate('<ab:option name="option-a" test="my-test">${abnanaSplitTest?.option}</ab:option>') == 'option-a'
 	}
 
 	def 'option should unset page variable at end of execution'() {
+		given:
+			service.checkOption('my-test', 'option-a') >> true
 		expect:
-			applyTemplate('<ab:option name="option-a" test="my-test"/>${abnanaSplitTest?.option}') == 'option-a'
+			applyTemplate('<ab:option name="option-a" test="my-test"/>${abnanaSplitTest?.option}') == ''
 	}
 
 	def 'option should check that the requested option is valid'() {
 		when:
 			applyTemplate '<ab:option test="my-test" name="option-a"/>'
 		then:
-			1 * service.checkOption('my-test', 'option-1')
+			1 * service.checkOption('my-test', 'option-a')
 	}
 
 	@Unroll
@@ -118,6 +132,8 @@ class AbnanaSplitTagLibSpec extends Specification {
 
 	@Unroll
 	def 'finished should throw expcetion if ifOption is set AND we are inside an option tag'() {
+		given:
+			service.checkOption('my-test', 'option-a') >> true
 		when:
 			applyTemplate html
 		then:

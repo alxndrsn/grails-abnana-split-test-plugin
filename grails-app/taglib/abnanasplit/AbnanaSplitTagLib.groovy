@@ -7,22 +7,34 @@ class AbnanaSplitTagLib {
 
 	def test = { att, body ->
 		if(!att.name) throw new AbSplitTestNotSpecifiedException('<ab:test> missing attribute: "name"')
-		// TODO set page variable for the test name
+		if(pageScope.abnanaSplitTest) throw new AbnanaSplitException("Cannot nest tests - $att.name inside $pageScope.abnanaSplitTest.name")
+		pageScope.abnanaSplitTest = [name:att.name]
 		out << body()
-		// TODO unset page variable for the test name
+		pageScope.abnanaSplitTest = null
 	}
 
 	def option = { att, body ->
-		// TODO check we are inside a test or that att.test is set
-		// TODO check that the current test has the specified option
-		// TODO check if requested option is selected for this user
-		out << body()
+		def name = att.name
+		if(!name) throw new AbnanaSplitException("No name specified for option in test $testName")
+		withTest(att) { testName ->
+			if(abnanaSplitService.checkOption(testName, name)) {
+				pageScope.abnanaSplitTest.option = name
+				out << body()
+				pageScope.abnanaSplitTest.option = null
+			}
+		}
 	}
 
 	def finished = { att ->
-		// TODO check we are inside a test or that att.test is set
-		// TODO check that att.goal is set orr that we are in an option tag
-		// TODO mark the test as finished (if ifOption not set or fulfilled)
+		if(!att.goal) throw new AbnanaSplitException('No goal supplied for "finished" step')
+		withTest(att) { testName ->
+			if(att.ifOption && pageScope.abnanaSplitTest.option) {
+				throw new AbnanaSplitException("finished.option specified twice: $pageScope.abnanaSplitTest.option, $att.ifOption")
+			}
+			if(!att.ifOption || abnanaSplitService.checkOption(testName, att.ifOption)) {
+				abnanaSplitService.markFinished(testName, att.goal)
+			}
+		}
 	}
 
 	def convert = { att ->
@@ -31,6 +43,22 @@ class AbnanaSplitTagLib {
 
 	def fail = { att ->
 		ab.finished(att + [goal:'fail'])
+	}
+
+	private void withTest(att, Closure c) {
+		def testName = pageScope.abnanaSplitTest?.name
+		if(testName && att.test) throw new AbnanaSplitException("test.name speicified twice: $name, $att.test")
+		def temporaryName = false
+		if(!testName) {
+			temporaryName = true
+			testName = att.test
+			pageScope.abnanaSplitTest = [name:testName]
+		}
+		if(!testName) throw new AbSplitTestNotSpecifiedException()
+		c.call(testName)
+		if(temporaryName) {
+			pageScope.abnanaSplitTest = null
+		}
 	}
 }
 

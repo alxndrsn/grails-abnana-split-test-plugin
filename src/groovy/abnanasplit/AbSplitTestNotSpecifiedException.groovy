@@ -1,4 +1,4 @@
 package abnanasplit
 
-class AbSplitTestNotSpecifiedException extends RuntimeException {}
+class AbSplitTestNotSpecifiedException extends AbnanaSplitException {}
 
