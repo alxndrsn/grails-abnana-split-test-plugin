@@ -5,8 +5,8 @@ Grails Abnana Split Plugin
 TODO                    | IN PROGRESS               | DONE
                                                       create test domain class
                                                       create taglib for embedding test
-create taglib for including javascript
-create javascript test functionality
+                                                      create taglib for including javascript
+                                                      create javascript test functionality
 inject ab object/methods into controllers
 inject ab object/methods into services
 detect split test config files at startup
@@ -70,11 +70,9 @@ In Controller:
 
 In javascript:
 
-	if(ab.test('my_test', 'a')) {
+	if(abTest['my_test']['a']) {
 		
 	} else { ... }
-
-	switch(ab.test('my_test'))
 
 # Backend
 

@@ -1,7 +1,8 @@
 package abnanasplit
 
 class AbnanaSplitService {
-	boolean checkOption(testName, optionName) {}
-	void markFinished(testName, goalName) {}
+	String getOption(String test) {}
+	boolean checkOption(String test, String option) {}
+	void markFinished(String test, String goal) {}
 }
 

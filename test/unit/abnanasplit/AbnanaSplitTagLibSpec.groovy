@@ -169,6 +169,45 @@ class AbnanaSplitTagLibSpec extends Specification {
 				'<ab:finished test="my-test" goal="all-done" ifOption="option-b"/>']
 	}
 
+	def 'calling javascript tag without a test should throw an exception'() {
+		when:
+			applyTemplate("<ab:javascript/>")
+		then:
+			thrown GrailsTagException
+		}
+
+	def 'rawjavascript tag should include details of requested test'() {
+		given:
+			service.getOption('my-test') >> 'option-a'
+		expect:
+			applyTemplate('<ab:rawjavascript test="my-test"/>') == 'var abTest=abTest||{};abTest["my-test"]={"option-a":true};'
+	}
+
+	def 'javascript tag should include details of requested test'() {
+		given:
+			service.getOption('my-test') >> 'option-a'
+		expect:
+			applyTemplate('<ab:javascript test="my-test"/>') == '<script type="text/javascript>var abTest=abTest||{};abTest["my-test"]={"option-a":true};</script>'
+	}
+
+	def 'rawjavascript tag should include details of multiple requested tests'() {
+		given:
+			service.getOption('good-test-1') >> 'option-1'
+			service.getOption('good-test-2') >> 'option-2'
+			service.getOption('good-test-3') >> 'option-3'
+		expect:
+			applyTemplate('<ab:rawjavascript test="good-test-1, good-test-2,good-test-3 "/>') == 'var abTest=abTest||{};abTest["good-test-1"]={"option-1":true};abTest["good-test-2"]={"option-2":true};abTest["good-test-3"]={"option-3":true};'
+	}
+
+	def 'javascript tag should include details of multiple requested tests'() {
+		given:
+			service.getOption('good-test-1') >> 'option-1'
+			service.getOption('good-test-2') >> 'option-2'
+			service.getOption('good-test-3') >> 'option-3'
+		expect:
+			applyTemplate('<ab:javascript test="good-test-1, good-test-2,good-test-3 "/>') == '<script type="text/javascript>var abTest=abTest||{};abTest["good-test-1"]={"option-1":true};abTest["good-test-2"]={"option-2":true};abTest["good-test-3"]={"option-3":true};</script>'
+	}
+
 	private static TODO(message='not yet implemented') {
 		assert false == message
 	}

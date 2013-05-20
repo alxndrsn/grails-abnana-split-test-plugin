@@ -45,6 +45,22 @@ class AbnanaSplitTagLib {
 		ab.finished(att + [goal:'fail'])
 	}
 
+	def rawjavascript = { att ->
+		def tests = att.test.split(',')*.trim()
+		if(!tests) throw new AbSplitTestNotSpecifiedException("No tests specified in <ab:*script> tag.")
+		out << 'var abTest=abTest||{};'
+		tests.each { test ->
+			def option = abnanaSplitService.getOption(test)
+			out << 'abTest["' + test + '"]={"' + option + '":true};'
+		}
+	}
+
+	def javascript = { att ->
+		out << '<script type="text/javascript>'
+		out << rawjavascript(att)
+		out << '</script>'
+	}
+
 	private void withTest(att, Closure c) {
 		def testName = pageScope.abnanaSplitTest?.name
 		if(testName && att.test) throw new AbnanaSplitException("test.name speicified twice: $name, $att.test")
