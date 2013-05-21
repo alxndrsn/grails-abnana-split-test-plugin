@@ -1,6 +1,8 @@
-Grails Abnana Split Plugin
+# Grails Abnana Split Plugin
 
-# TASKS
+<img src="https://api.travis-ci.org/alxndrsn/grails-abnana-split-test-plugin.png"/>
+
+## TASKS
 
 TODO                    | IN PROGRESS               | DONE
                                                       create test domain class
