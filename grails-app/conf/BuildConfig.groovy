@@ -6,7 +6,10 @@ grails.project.dependency.resolution = {
 	log 'warn'
 
 	repositories {
+		grailsHome()
+		mavenLocal()
 		grailsCentral()
+		mavenCentral()
 	}
 
 	dependencies {
