@@ -1,6 +1,6 @@
 # Grails Abnana Split Plugin
 
-<img src="https://api.travis-ci.org/alxndrsn/grails-abnana-split-test-plugin.png"/>
+[![Build Status](https://travis-ci.org/alxndrsn/grails-abnana-split-test-plugin.png)](https://travis-ci.org/alxndrsn/grails-abnana-split-test-plugin)
 
 ## TASKS
 
