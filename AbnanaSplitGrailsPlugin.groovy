@@ -1,40 +1,18 @@
 class AbnanaSplitGrailsPlugin {
-    // the plugin version
-    def version = "0.1"
-    // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "2.2 > *"
-    // resources that are excluded from plugin packaging
-    def pluginExcludes = [
-        "grails-app/views/error.gsp"
-    ]
-
-    // TODO Fill in these fields
-    def title = "Abnana Split Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
-    def description = '''\
-Brief summary/description of the plugin.
-'''
-
-    // URL to the plugin's documentation
-    def documentation = "http://grails.org/plugin/abnana-split"
-
-    // Extra (optional) plugin metadata
-
-    // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
-
-    // Details of company behind the plugin (if there is one)
-//    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
-
-    // Any additional developers beyond the author specified above.
-//    def developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
-
-    // Location of the plugin's issue tracker.
-//    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
-
-    // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+	def version = '0.1-SNAPSHOT'
+	def grailsVersion = '2.2 > *'
+	def pluginExcludes = [
+		'grails-app/views/error.gsp',
+		'grails-app/conf/DataSource.groovy',
+		'grails-app/controllers/test/'
+	]
+	def title = 'Abnana Split Plugin'
+	def author = 'Alex Anderson'
+	def description = 'A/B Split Testing for Grails'
+	def documentation = 'https://github.com/alxndrsn/grails-abnana-split-test-plugin'
+	def license = 'APACHE'
+	def issueManagement = [system:'github', url:'https://github.com/alxndrsn/grails-abnana-split-test-plugin/issues']
+	def scm = [url:'git@github.com:alxndrsn/grails-abnana-split-test-plugin.git']
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
