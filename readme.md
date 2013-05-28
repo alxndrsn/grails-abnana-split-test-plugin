@@ -4,23 +4,23 @@
 
 ## TASKS
 
-TODO                    | IN PROGRESS               | DONE
-                                                      create test domain class
-                                                      create taglib for embedding test
-                                                      create taglib for including javascript
-                                                      create javascript test functionality
-                                                      set up CI on travis as per http://blog.freeside.co/post/44061616547/grails-builds-on-travis-ci
-inject ab object/methods into controllers
-inject ab object/methods into services
-detect split test config files at startup
-admin screen to show active and inactive tests (starting with just scaffold)
-add results to tests
-allow finishing of tests and preferring one result over another (manual)
-allow finishing of tests and preferring one result over another (automated)
-allow finishing of tests and preferring one result over another (automated with custom configuration)
-allow restriction of a test to a particular user or set of users
-add support for choosing which option in a functional test
-prevent concurrent tests for the same user
+	TODO                    | IN PROGRESS               | DONE
+							      create test domain class
+							      create taglib for embedding test
+							      create taglib for including javascript
+							      create javascript test functionality
+							      set up CI on travis as per http://blog.freeside.co/post/44061616547/grails-builds-on-travis-ci
+	inject ab object/methods into controllers
+	inject ab object/methods into services
+	detect split test config files at startup
+	admin screen to show active and inactive tests (starting with just scaffold)
+	add results to tests
+	allow finishing of tests and preferring one result over another (manual)
+	allow finishing of tests and preferring one result over another (automated)
+	allow finishing of tests and preferring one result over another (automated with custom configuration)
+	allow restriction of a test to a particular user or set of users
+	add support for choosing which option in a functional test
+	prevent concurrent tests for the same user
 
 # Usage
 
