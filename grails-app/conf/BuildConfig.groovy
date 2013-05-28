@@ -24,6 +24,7 @@ grails.project.dependency.resolution = {
 		test ':spock:0.7', {
 			exclude "spock-grails-support"
 		}
+		test ':hibernate:2.2.1', ':tomcat:2.2.1'
 	}
 }
 
