@@ -12,6 +12,16 @@ class AbnanaSplitTagLib {
 		}
 	}
 
+	void finished(String test, String goal) {
+		abnanaSplitService.markFinished(test, goal)
+	}
+
+	void finishedIf(String test, String option, String goal) {
+		if(abnanaSplitService.checkOption(test, option)) {
+			finished(test, goal)
+		}
+	}
+
 //> TAGS
 	def test = { att, body ->
 		if(!att.name) throw new AbSplitTestNotSpecifiedException('<ab:test> missing attribute: "name"')

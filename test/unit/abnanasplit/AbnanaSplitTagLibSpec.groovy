@@ -242,6 +242,46 @@ class AbnanaSplitTagLibSpec extends Specification {
 			thrown AbnanaSplitException
 	}
 
+	def 'finished() should mark test finished with provided goal'() {
+		when:
+			tagLib.finished('my-test', 'my-goal')
+		then:
+			1 * service.markFinished('my-test', 'my-goal')
+	}
+
+	def 'finished() should throw excpetion if test does not exist'() {
+		when:
+			tagLib.finished('not-my-test', 'my-goal')
+		then:
+			1 * service.markFinished('not-my-test', 'my-goal') >> { throw new AbnanaSplitException() }
+			thrown AbnanaSplitException
+	}
+
+	def 'finishedIf() should mark test finished if option is selected'() {
+		when:
+			tagLib.finishedIf('my-test', 'option-a', 'my-goal')
+		then:
+			1 * service.checkOption('my-test', 'option-a') >> true
+			1 * service.markFinished('my-test', 'my-goal')
+	}
+
+	def 'finishedIf() should not mark test finished if option is not selected'() {
+		when:
+			tagLib.finishedIf('my-test', 'option-b', 'my-goal')
+		then:
+			1 * service.checkOption('my-test', 'option-b') >> false
+			0 * service.markFinished(_)
+	}
+
+	def 'finishedIf() should throw exception if test does not exist'() {
+		when:
+			tagLib.finishedIf('not-my-test', 'option-a', 'my-goal')
+		then:
+			1 * service.checkOption('not-my-test', 'option-a') >> { throw new AbnanaSplitException() }
+			0 * service._
+			thrown AbnanaSplitException
+	}
+
 	private static TODO(message='not yet implemented') {
 		assert false == message
 	}
