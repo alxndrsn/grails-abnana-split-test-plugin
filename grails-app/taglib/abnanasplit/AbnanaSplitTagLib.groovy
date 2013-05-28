@@ -5,6 +5,14 @@ class AbnanaSplitTagLib {
 
 	def abnanaSplitService
 
+//> CONTROLLER METHODS
+	void option(String test, String option, Closure c) {
+		if(abnanaSplitService.checkOption(test, option)) {
+			c.call()
+		}
+	}
+
+//> TAGS
 	def test = { att, body ->
 		if(!att.name) throw new AbSplitTestNotSpecifiedException('<ab:test> missing attribute: "name"')
 		if(pageScope.abnanaSplitTest) throw new AbnanaSplitException("Cannot nest tests - $att.name inside $pageScope.abnanaSplitTest.name")

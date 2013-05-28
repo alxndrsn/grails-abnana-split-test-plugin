@@ -10,7 +10,7 @@
                                                               create taglib for including javascript
                                                               create javascript test functionality
                                                               set up CI on travis as per http://blog.freeside.co/post/44061616547/grails-builds-on-travis-ci
-	inject ab object/methods into controllers
+	                          inject ab object/methods into controllers
 	inject ab object/methods into services
 	detect split test config files at startup
 	admin screen to show active and inactive tests (starting with just scaffold)

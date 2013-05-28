@@ -13,6 +13,7 @@ class AbnanaSplitTagLibSpec extends Specification {
 		tagLib.abnanaSplitService = service
 	}
 
+//> TAG TESTS
 	@Unroll
 	def 'test should fail if no test name is been set'() {
 		when:
@@ -206,6 +207,39 @@ class AbnanaSplitTagLibSpec extends Specification {
 			service.getOption('good-test-3') >> 'option-3'
 		expect:
 			applyTemplate('<ab:javascript test="good-test-1, good-test-2,good-test-3 "/>') == '<script type="text/javascript>var abTest=abTest||{};abTest["good-test-1"]={"option-1":true};abTest["good-test-2"]={"option-2":true};abTest["good-test-3"]={"option-3":true};</script>'
+	}
+
+//> METHOD TESTS
+	def 'option() should execute code if option is set'() {
+		given:
+			def closureExecuted = false
+		when:
+			tagLib.option('my-test', 'option-a') {
+				closureExecuted = true
+			}
+		then:
+			1 * service.checkOption('my-test', 'option-a') >> true
+			closureExecuted
+	}
+
+	def 'option() should not execute code if option is not set'() {
+		given:
+			def closureExecuted = false
+		when:
+			tagLib.option('my-test', 'option-b') {
+				closureExecuted = true
+			}
+		then:
+			1 * service.checkOption('my-test', 'option-b') >> false
+			!closureExecuted
+	}
+
+	def 'option() should throw exception if test does not exist'() {
+		when:
+			tagLib.option('not-my-test', 'option-x') {}
+		then:
+			1 * service.checkOption('not-my-test', 'option-x') >> { throw new AbnanaSplitException() }
+			thrown AbnanaSplitException
 	}
 
 	private static TODO(message='not yet implemented') {
