@@ -12,9 +12,11 @@
                                                               set up CI on travis as per http://blog.freeside.co/post/44061616547/grails-builds-on-travis-ci
                                                               inject ab object/methods into controllers
 	                                                      detect split test config files at startup
-	admin screen to show active and inactive tests (starting with just scaffold)
+	                                                      admin screen to show all tests
 	add results to tests
+	show result counts for tests on admin screen
 	allow finishing of tests and preferring one result over another (manual)
+	show shich tests are active and inactive on admin screen
 	allow finishing of tests and preferring one result over another (automated)
 	allow finishing of tests and preferring one result over another (automated with custom configuration)
 	allow restriction of a test to a particular user or set of users
@@ -92,7 +94,7 @@ test-name | user-identifier | option-shown | conversion-point | date-test-starte
 
 # considerations
 
-* should it be possible to run more than one test at once?
+* should it be possible to run more than one test at once on the same user?
 * what happens if you try to run a new test with the same name as an old test?
 * should tests be re-runnable for different users?
 * would it be possible to restrict only to certain users?
