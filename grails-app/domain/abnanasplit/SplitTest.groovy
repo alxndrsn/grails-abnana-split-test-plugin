@@ -1,5 +1,0 @@
-package abnanasplit
-
-class SplitTest {
-}
-

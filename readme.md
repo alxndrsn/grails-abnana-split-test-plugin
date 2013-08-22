@@ -13,7 +13,7 @@
                                                               inject ab object/methods into controllers
 	                                                      detect split test config files at startup
 	                                                      admin screen to show all tests
-	add results to tests
+	                          add results to tests
 	show result counts for tests on admin screen
 	allow finishing of tests and preferring one result over another (manual)
 	show shich tests are active and inactive on admin screen
@@ -23,6 +23,7 @@
 	add support for choosing which option in a functional test
 	inject ab object/methods into services
 	prevent concurrent tests for the same user
+	add script to permanently remove/fix a particular option *in the source code*
 
 # Usage
 
