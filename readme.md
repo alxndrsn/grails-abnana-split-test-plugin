@@ -11,7 +11,7 @@
                                                               create javascript test functionality
                                                               set up CI on travis as per http://blog.freeside.co/post/44061616547/grails-builds-on-travis-ci
                                                               inject ab object/methods into controllers
-	                          detect split test config files at startup
+	                                                      detect split test config files at startup
 	admin screen to show active and inactive tests (starting with just scaffold)
 	add results to tests
 	allow finishing of tests and preferring one result over another (manual)

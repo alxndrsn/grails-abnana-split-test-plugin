@@ -47,7 +47,7 @@ class ArtefactSpec extends IntegrationSpec {
 
 	def 'grailsApplication should have a list of split test classes'() {
 		expect:
-			grailsApplication.splitTestClasses == []
+			grailsApplication.splitTestClasses*.clazz == [abnanasplit.test.MySplitTest]
 	}
 }
 
