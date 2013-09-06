@@ -24,6 +24,7 @@
 	inject ab object/methods into services
 	prevent concurrent tests for the same user
 	add script to permanently remove/fix a particular option *in the source code*
+	add weightings to conversion options so they can reflect e.g. profit margins on different conversions
 
 # Usage
 
